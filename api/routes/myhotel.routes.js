@@ -37,6 +37,7 @@ router.post(
   MyHotelController.uploadAssest
 );
 router.get("/get-hotel",verifyToken,MyHotelController.getHotel)
-
+router.get("/get-hotel-byId/:hotelId",verifyToken,MyHotelController.getHotelById)
+router.put('/update-hotel/:hotelId',verifyToken,upload.array('imageFiles'),MyHotelController.updateHotel)
 // module.exports = router;
 export default router

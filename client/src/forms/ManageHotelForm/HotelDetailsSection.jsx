@@ -1,11 +1,18 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
-
+import { useLocation } from 'react-router-dom'
 const HotelDetailsSection = () => {
+    const location=useLocation()
     const {register,formState:{errors}}=useFormContext()
+    const urlSearch=new URLSearchParams(location.search)
+    const type=urlSearch.get('type')
   return (
     <div className='flex flex-col gap-4'>
-      <h1 className='text-3xl font-bold mb-3'>Add Hotel</h1>
+      <h1 className='text-3xl font-bold mb-3'>
+        {
+          type==='update' ?'Update Hotel':"Add Hotel"
+        }
+      </h1>
       <label htmlFor="" className="text-gray-700 text-sm font-bold flex-1">
         Name
         <input

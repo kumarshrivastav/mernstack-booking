@@ -4,6 +4,9 @@ export const registerUser=(data)=>axios.post("/api/users/register",data)
 export const logout=()=>axios.get("/api/users/logout");
 export const addMyHotel=(hotelFormData)=>axios.post("/api/my-hotels/add-hotel",hotelFormData)
 export const fetchMyHotels=()=>axios.get("/api/my-hotels/get-hotel")
+export const getHotelById=(hotelId)=>axios.get(`/api/my-hotels/get-hotel-byId/${hotelId}`)
+export const updateHotel=(formData,hotelId)=>axios.put(`/api/my-hotels/update-hotel/${hotelId}`,formData)
+
 
 axios.interceptors.response.use((config)=>config,async (error)=>{
     const orignalRequest=error.config;
