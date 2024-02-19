@@ -36,6 +36,7 @@ router.post(
   upload.array("imageFiles", 6),
   MyHotelController.uploadAssest
 );
+router.get("/get-hotel",verifyToken,MyHotelController.getHotel)
 
 // module.exports = router;
 export default router

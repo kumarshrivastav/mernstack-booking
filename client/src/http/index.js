@@ -3,7 +3,7 @@ export const loginUser=(data)=>axios.post("/api/users/login",data)
 export const registerUser=(data)=>axios.post("/api/users/register",data)
 export const logout=()=>axios.get("/api/users/logout");
 export const addMyHotel=(hotelFormData)=>axios.post("/api/my-hotels/add-hotel",hotelFormData)
-
+export const fetchMyHotels=()=>axios.get("/api/my-hotels/get-hotel")
 
 axios.interceptors.response.use((config)=>config,async (error)=>{
     const orignalRequest=error.config;

@@ -24,5 +24,13 @@ class MyHotelController {
       return next(error);
     }
   }
+  async getHotel(req,res,next){
+    try {
+      const hotels=await hotelModel.find({userId:req.userId})
+      return res.status(200).send(hotels)
+    } catch (error) {
+      return next(error)
+    }
+  }
 }
 export default new MyHotelController();

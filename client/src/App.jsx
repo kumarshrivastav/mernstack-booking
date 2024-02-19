@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import PrivateRoute from './components/PrivateRoute'
 import AddHotel from './pages/AddHotel'
+import MyHotels from './pages/MyHotels'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/login' element={<Layout><Login/></Layout>}/>
         <Route element={<PrivateRoute/>}>
           <Route path='/add-hotel' element={<Layout><AddHotel/></Layout>}/>
+          <Route path='/my-hotels' element={<Layout><MyHotels/></Layout>}/>
         </Route>
         <Route path="*" element={<Navigate to="/" />}/>
       </Routes>
