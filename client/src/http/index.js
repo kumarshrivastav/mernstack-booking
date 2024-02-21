@@ -6,7 +6,7 @@ export const addMyHotel=(hotelFormData)=>axios.post("/api/my-hotels/add-hotel",h
 export const fetchMyHotels=()=>axios.get("/api/my-hotels/get-hotel")
 export const getHotelById=(hotelId)=>axios.get(`/api/my-hotels/get-hotel-byId/${hotelId}`)
 export const updateHotel=(formData,hotelId)=>axios.put(`/api/my-hotels/update-hotel/${hotelId}`,formData)
-
+export const searchHotels=(queryParams)=>axios.get(`/api/hotels/search?${queryParams}`)
 
 axios.interceptors.response.use((config)=>config,async (error)=>{
     const orignalRequest=error.config;
