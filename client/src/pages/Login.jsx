@@ -2,10 +2,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { loginUser } from "../http";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import {SignInFailure,SignInSuccess,StartSignIn} from "../state/userSlice"
 const Login = () => {
+  const location=useLocation()
   const {
     register,
     watch,
@@ -23,7 +24,7 @@ const Login = () => {
       console.log(data);
       toast.success("Login Successfully!")
       dispatch(SignInSuccess(data))
-      return navigate("/");
+      navigate(location.state?.from?.pathname || '/');
     } catch (error) {
       dispatch(SignInFailure(error.response.data.message))
       return toast.error(error.response.data.message);

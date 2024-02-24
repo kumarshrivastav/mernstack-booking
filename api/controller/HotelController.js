@@ -1,5 +1,7 @@
+import { validationResult } from "express-validator";
 import hotelModel from "../models/hotelModel.js";
 import constructSearchQuery from "../utils/constructedQuery.js";
+import ErrorHandler from "../utils/error.handler.js";
 
 class HotelController {
   async getHotelSearch(req, res, next) {
@@ -43,6 +45,19 @@ class HotelController {
       return res.status(200).send(response);
     } catch (error) {
       return next(error);
+    }
+  }
+  async findHotelById(req,res,next){
+    try {
+      const errors=validationResult(req)
+      if(!errors.isEmpty()){
+        return next(ErrorHandler(400,errors.array()))
+      }
+      const hotelId=req.params.hotelId.toString()
+      const hotel=await hotelModel.findById(hotelId)
+      return res.status(200).send(hotel)
+    } catch (error) {
+      return next(error)
     }
   }
 }
