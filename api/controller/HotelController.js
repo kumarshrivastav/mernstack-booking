@@ -1,19 +1,41 @@
 import hotelModel from "../models/hotelModel.js";
+import constructSearchQuery from "../utils/constructedQuery.js";
 
 class HotelController {
   async getHotelSearch(req, res, next) {
     try {
+      const query = constructSearchQuery(req.query);
+      let sortOptions = {};
+      switch (req.query.sortOption) {
+        case "starRating":
+          sortOptions = { starRating: -1 };
+          break;
+        case "pricePerNightAsc":
+          sortOptions = { pricePerNight: 1 };
+          break;
+        case "pricePerNightDesc":
+          sortOptions = { pricePerNight: -1 };
+          break;
+      }
+
       const pageSize = 5;
       const pageNumber = parseInt(
         req.query.page ? req.query.page.toString() : "1"
       );
+      // {'$or': [ { city: /bhopal/i }, { country: /bhopal/i } ],adultCount:{$gte:2},pricePerNight: { $lte: '2999' }}
       const skip = (pageNumber - 1) * pageSize;
-      const hotels = await hotelModel.find().skip(skip).limit(pageSize);
-      const total = await hotelModel.countDocuments();
+      const hotels = await hotelModel
+        .find(query)
+        .sort(sortOptions)
+        .skip(skip)
+        .limit(pageSize);
+      const total = await hotelModel.countDocuments(query);
+      // console.log(hotels)
+      const condFind=hotels.length
       const response = {
         data: hotels,
         pagination: {
-          total,
+          total:total,
           page: pageNumber,
           pages: Math.ceil(total / pageSize),
         },
