@@ -7,12 +7,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const SearchBar = () => {
   const [userSearchContext, setUserSearchContext] = useState({
-    destination: "",
-    checkIn: new Date().toLocaleDateString(),
-    checkOut: new Date().toLocaleDateString(),
-    adultCount: 1,
-    childCount: 0,
-    hotelId: "",
+    destination: sessionStorage.getItem('destination') || '',
+    checkIn: new Date(sessionStorage.getItem('checkIn') || new Date()),
+    checkOut: new Date(sessionStorage.getItem('checkOut') || new Date()),
+    adultCount: parseInt(sessionStorage.getItem('adultCount') || '1'),
+    childCount: parseInt(sessionStorage.getItem('childCount') || '0'),
+    hotelId: sessionStorage.getItem('hotelId') || '',
   })
   const dispatch=useDispatch()
   const navigate=useNavigate()
@@ -31,8 +31,8 @@ const SearchBar = () => {
   const clearUserContext=()=>{
     setUserSearchContext({
     destination: "",
-    checkIn: new Date().toLocaleDateString(),
-    checkOut: new Date().toLocaleDateString(),
+    checkIn: new Date(),
+    checkOut: new Date(),
     adultCount: 1,
     childCount: 0,
     hotelId: "",}

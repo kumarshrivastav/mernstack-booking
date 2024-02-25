@@ -53,7 +53,7 @@ const Search = () => {
             dispatch(setPage(data?.pagination?.page))
             dispatch(setPages(data?.pagination?.pages))
         } catch (error) {
-            console.log(error.response.data.message)
+            console.log(error?.response?.data?.message)
         }
     }
     useEffect(() => {

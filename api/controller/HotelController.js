@@ -33,7 +33,6 @@ class HotelController {
         .limit(pageSize);
       const total = await hotelModel.countDocuments(query);
       // console.log(hotels)
-      const condFind=hotels.length
       const response = {
         data: hotels,
         pagination: {

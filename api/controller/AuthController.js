@@ -123,6 +123,18 @@ class AuthController{
         res.clearCookie('refreshToken')
         return res.status(200).send("User logout successfully")
     }
+    async me(req,res,next){
+        try {
+            const userId=req.userId
+             const user=await userModel.findById(userId).select('-password')
+             if(!user){
+                return next(ErrorHandler(400,'User not found'))
+             }
+             return res.status(200).send(user)
+        } catch (error) {
+            return next(error)
+        }
+    }
 }
 
 export default new AuthController()

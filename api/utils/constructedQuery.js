@@ -42,7 +42,6 @@ const constructSearchQuery = (queryParams) => {
         $lte:parseInt(queryParams.maxPrice).toString(),
     }
   }
-  console.log(constructedQuery)
   return constructedQuery;
 };
 
