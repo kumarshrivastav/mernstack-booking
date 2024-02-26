@@ -1,5 +1,6 @@
 // const mongoose=require('mongoose')
 import mongoose from "mongoose"
+import { bookingSchema } from "./bookingModel.js"
 let hotelSchema=mongoose.Schema({
     userId:{type:String,required:true},
     name:{type:String,required:true,unique:true},
@@ -13,7 +14,8 @@ let hotelSchema=mongoose.Schema({
     pricePerNight:{type:Number,required:true},
     starRating:{type:Number,required:true,min:1,max:5},
     imageUrls:[{type:String,required:true}],
-    lastUpdated:{type:Date,required:true}
+    lastUpdated:{type:Date,required:true},
+    bookings:[bookingSchema]
 })
 
 const hotelModel=mongoose.models.hotels || mongoose.model('hotels',hotelSchema)
