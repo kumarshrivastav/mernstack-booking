@@ -1,9 +1,29 @@
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React from "react";
 import { useForm } from "react-hook-form";
-
-const BookingForm = ({ currentUser }) => {
-    // console.log(currentUser)
+import {useStripe,useElements} from "@stripe/react-stripe-js"
+const BookingForm = ({ currentUser, paymentIntent }) => {
+  // console.log(currentUser)
   const { handleSubmit, register } = useForm();
+  const stripe=useStripe()
+  const elements=useElements()
+  const onSubmit=async(formData)=>{
+    try {
+      if(!stripe || !elements){
+        return;
+      }
+      const result=await stripe.confirmCardPayment(paymentIntent.clientSecret,{
+        payment_method:{
+          card:elements.getElement(CardElement)
+        }
+      })
+      if(result.paymentIntent?.status==='succeeded'){
+        
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <form className="grid grid-cols-1 gap-5 rounded-lg border border-slate-500 p-3">
       <span className="text-3xl font-bold">Confirm Your Details</span>
@@ -17,7 +37,7 @@ const BookingForm = ({ currentUser }) => {
             readOnly
             disabled
             value={currentUser?.firstName}
-            {...register('firstName')}
+            {...register("firstName")}
             className="mt-1 border rounded w-full py-2 px-3 text-gray-700 bg-gray-200 font-normal"
           />
         </label>
@@ -30,7 +50,7 @@ const BookingForm = ({ currentUser }) => {
             readOnly
             disabled
             value={currentUser?.lastName}
-            {...register('lastName')}
+            {...register("lastName")}
             className="mt-1 border rounded w-full py-2 px-3 text-gray-700 bg-gray-200 font-normal"
           />
         </label>
@@ -43,10 +63,26 @@ const BookingForm = ({ currentUser }) => {
             readOnly
             disabled
             value={currentUser?.email}
-            {...register('email')}
+            {...register("email")}
             className="mt-1 border rounded w-full py-2 px-3 text-gray-700 bg-gray-200 font-normal"
           />
         </label>
+      </div>
+      <div className="space-y-2">
+        <h2 className="text-xl font-semibold">Your Price Summanry</h2>
+        <div className="bg-blue-200 p-4 rounded-md">
+          <div className="font-semibold text-lg">
+            Total Cost: ${paymentIntent?.totalCost?.toFixed(2)}
+          </div>
+          <div className="text-xs">Includes taxes and charges</div>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <h3 className="text-xl font-semibold">Payment Details</h3>
+        <CardElement
+          id="payment-element"
+          className="border rounded-md p-2 text-sm"
+        />
       </div>
     </form>
   );

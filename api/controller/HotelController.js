@@ -3,7 +3,7 @@ import hotelModel from "../models/hotelModel.js";
 import constructSearchQuery from "../utils/constructedQuery.js";
 import ErrorHandler from "../utils/error.handler.js";
 import Stripe from "stripe";
-const stripe=new Stripe(process.env.STRIPE_API_SECRET_KEY)
+const stripe=new Stripe('sk_test_51Oo1B7SE8GUpcmyihjsq4mDqlg9p3Qc95qCWztdY2iD6l5e0VeUfND5P8MgN8gwiFiwzW3BGdy2Cdv4r0JPQoKTJ008DgfMRD8')
 class HotelController {
   async getHotelSearch(req, res, next) {
     try {
@@ -65,7 +65,7 @@ class HotelController {
     // 2.hotelId
     // 3.userId
     try {
-      
+      console.log(req.body)
       const {numberOfNights}=req.body
       const hotelId=req.params.hotelId
       const hotel=await hotelModel.findById(hotelId)

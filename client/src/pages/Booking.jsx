@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { findHotelById, me } from "../http";
+import { createPaymentIntent, findHotelById, me } from "../http";
 import BookingForm from "../forms/BookingForm/BookingForm";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BookingDetailSummary from "../components/BookingDetailSummary";
 import { useSelector } from "react-redux";
-
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+const STRIPE_PUB_KEY=import.meta.env.VITE_STRIPE_PUB_KEY || ''
+const stripePromise=loadStripe(STRIPE_PUB_KEY)
 const Booking = () => {
-    const {checkIn,checkOut,adultCount,childCount}=useSelector((state)=>state.search)
-    const navigate=useNavigate()
-    const location=useLocation()
+  // const { stripePromise } = useSelector((state) => state.user);
+  const { destination,checkIn, checkOut, adultCount, childCount } = useSelector(
+    (state) => state.search
+  );
+  const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState({});
   const [hotel, setHotel] = useState({});
+  const [paymentIntentData,setPaymentIntentData]=useState({})
   const { hotelId } = useParams();
+  console.log(paymentIntentData)
   const [numberOfNights, setNumberOfNights] = useState(0);
-//   console.log(hotel)
   useEffect(() => {
     if (checkIn && checkOut) {
       const nights =
@@ -22,25 +29,50 @@ const Booking = () => {
       setNumberOfNights(Math.ceil(nights));
     }
   }, [checkIn, checkOut]);
-//   console.log(user?.email);
+  
+
+
+  const createPaymentIntents = async () => {
+    try {
+      const { data} = await createPaymentIntent(
+        hotelId,
+        parseInt(numberOfNights)
+      );
+      setPaymentIntentData(data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loggedInUser = async () => {
+    try {
+      const { data } = await me();
+      setUser(data);
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  };
+  const findHotel=async ()=>{
+    try {
+      const { data } = await findHotelById(hotelId);
+      setHotel(data);
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  }
   useEffect(() => {
-    const loggedInUser = async () => {
-      try {
-        const { data: currentUser } = await me();
-        const { data: currentHotel } = await findHotelById(hotelId);
-        setHotel(currentHotel);
-        setUser(currentUser);
-      } catch (error) {
-        console.log(error.response.data.message);
-      }
-    };
-    loggedInUser();
-  }, []);
-//   if(!user.email){
-//     navigate('/login',{state:{from:location}})
-//   }
-  if(!hotel){
-    return <></>
+    // findHotel()
+    // loggedInUser();
+    // createPaymentIntents();
+    Promise.all([findHotel(),loggedInUser(),createPaymentIntents()])
+  }, [hotelId,numberOfNights,destination]);
+
+  // if(!user.email){
+  // return navigate('/login',{state:{from:location}})
+  // }
+
+  if (!hotel) {
+    return <></>;
   }
   return (
     <div className="grid gap-4 md:grid-cols-[1fr_2fr]">
@@ -52,7 +84,14 @@ const Booking = () => {
         numberOfNights={numberOfNights}
         hotel={hotel}
       />
-      {user && <BookingForm currentUser={user} />}
+      {user && paymentIntentData && (
+        <Elements
+          stripe={stripePromise}
+          options={{ clientSecret: paymentIntentData.clientSecret }}
+        >
+          <BookingForm currentUser={user} paymentIntent={paymentIntentData} />
+        </Elements>
+      )}
     </div>
   );
 };

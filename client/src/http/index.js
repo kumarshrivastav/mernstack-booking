@@ -9,6 +9,13 @@ export const updateHotel=(formData,hotelId)=>axios.put(`/api/my-hotels/update-ho
 export const searchHotels=(queryParams)=>axios.get(`/api/hotels/search?${queryParams}`)
 export const findHotelById=(hotelId)=>axios.get(`/api/hotels/hotel/${hotelId}`)
 export const me=()=>axios.get('/api/users/me')
+export const createPaymentIntent=(hotelId,numberOfNights)=>axios.post(`/api/hotels/${hotelId}/bookings/create-payment-intent`,{numberOfNights:numberOfNights})
+
+
+
+
+
+
 axios.interceptors.response.use((config)=>config,async (error)=>{
     const orignalRequest=error.config;
     if(error?.response?.status===401 && orignalRequest && !orignalRequest.isRetry){
