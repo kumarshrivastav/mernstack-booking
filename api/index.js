@@ -7,6 +7,7 @@ import ConnectDB from './utils/db.js';
 import userRouter from "./routes/users.routes.js"
 import hotelRouter from "./routes/myhotel.routes.js"
 import hotelsRouter from "./routes/hotels.routes.js"
+import mybookingRouter from "./routes/mybooking.routes.js"
 import cookieParser from 'cookie-parser';
 import { v2 as cloudinary } from 'cloudinary';
 const corOption={
@@ -27,6 +28,7 @@ app.use(express.urlencoded({extended:true}))
 app.use("/api/users",userRouter)
 app.use("/api/my-hotels",hotelRouter) 
 app.use("/api/hotels",hotelsRouter)
+app.use('/api/mybooking',mybookingRouter)
 const server=app.listen(8000,()=>{
     console.log(`Server Started at port ${server.address().port} `)
 })

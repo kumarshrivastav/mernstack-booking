@@ -8,4 +8,5 @@ router.get("/search",HotelController.getHotelSearch)
 router.get("/hotel/:hotelId",[param('hotelId').notEmpty().withMessage('Hotel Id is required')],HotelController.findHotelById)
 router.post('/:hotelId/bookings/create-payment-intent',verifyToken,HotelController.createPaymentIntent)
 router.post("/:hotelId/bookings",verifyToken,HotelController.hotelBooking)
+router.get("/",HotelController.hotels)
 export default router

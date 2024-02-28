@@ -112,6 +112,14 @@ class HotelController {
       return next(error)
     }
   }
+  async hotels(req,res,next){
+    try {
+      const hotels=await hotelModel.find().sort('-lastUpdated')
+      return res.status(200).send(hotels)
+    } catch (error) {
+      return next(error)
+    }
+  }
   async hotelBooking(req,res,next){
     try {
       console.log(req.body)
