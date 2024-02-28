@@ -4,7 +4,7 @@ import constructSearchQuery from "../utils/constructedQuery.js";
 import userModel from "../models/user.js"
 import ErrorHandler from "../utils/error.handler.js";
 import Stripe from "stripe";
-const stripe=new Stripe('sk_test_51Oo1B7SE8GUpcmyihjsq4mDqlg9p3Qc95qCWztdY2iD6l5e0VeUfND5P8MgN8gwiFiwzW3BGdy2Cdv4r0JPQoKTJ008DgfMRD8')
+const stripe=new Stripe(process.env.STRIPE_API_SECRET_KEY)
 class HotelController {
   async getHotelSearch(req, res, next) {
     try {
@@ -87,7 +87,6 @@ class HotelController {
           country:hotel.country
         }
       })
-      console.log(customer)
       const paymentIntent=await stripe.paymentIntents.create({
         description:'Hotel Booking with Stripe payment gateway',
         amount:totalCost*100,
@@ -101,7 +100,6 @@ class HotelController {
       if(!paymentIntent.client_secret){
         return next(ErrorHandler(500,'Error Creating Payment Intent'))
       }
-      console.log(paymentIntent)
       const response={
         paymentIntentId:paymentIntent.id,
         clientSecret:paymentIntent.client_secret,
@@ -122,7 +120,6 @@ class HotelController {
   }
   async hotelBooking(req,res,next){
     try {
-      console.log(req.body)
       const paymentIntentId=req.body.paymentIntentId
       const paymentIntent=await stripe.paymentIntents.retrieve(paymentIntentId)
       if(!paymentIntent){

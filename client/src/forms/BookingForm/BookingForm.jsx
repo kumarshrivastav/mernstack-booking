@@ -15,7 +15,6 @@ const BookingForm = ({ currentUser, paymentIntent }) => {
   const { adultCount, childCount, checkIn, checkOut } = useSelector(
     (state) => state.search
   );
-  console.log(hotelId)
   const { handleSubmit, register } = useForm();
   const defaultValues={
       firstName: currentUser?.firstName,
@@ -42,7 +41,6 @@ const BookingForm = ({ currentUser, paymentIntent }) => {
       if (!stripe || !elements) {
         return;
       }
-      console.log(paymentIntent.clientSecret)
       const result = await stripe.confirmCardPayment(
         paymentIntent.clientSecret,
         {
@@ -51,17 +49,14 @@ const BookingForm = ({ currentUser, paymentIntent }) => {
           }
         },
       );
-      console.log(result)
       if(result.error){
         setLoading(false)
       }
       if (result.paymentIntent?.status === "succeeded") {
-        console.log('request triggered')
         const { data } = await hotelBookingRequest(hotelId,{
           ...defaultValues,
           paymentIntentId: result.paymentIntent.id,
         });
-        console.log(data)
         toast.success('Hotel Booking Successfully')
         setLoading(false)
         return navigate('/search')
