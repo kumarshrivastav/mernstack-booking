@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import hotelModel from "../models/hotelModel.js";
 import constructSearchQuery from "../utils/constructedQuery.js";
+import userModel from "../models/user.js"
 import ErrorHandler from "../utils/error.handler.js";
 import Stripe from "stripe";
 const stripe=new Stripe('sk_test_51Oo1B7SE8GUpcmyihjsq4mDqlg9p3Qc95qCWztdY2iD6l5e0VeUfND5P8MgN8gwiFiwzW3BGdy2Cdv4r0JPQoKTJ008DgfMRD8')
@@ -65,27 +66,45 @@ class HotelController {
     // 2.hotelId
     // 3.userId
     try {
-      console.log(req.body)
+      // console.log(req.body)
       const {numberOfNights}=req.body
       const hotelId=req.params.hotelId
+      const user=await userModel.findById(req.userId)
       const hotel=await hotelModel.findById(hotelId)
       if(!hotel){
         return next(ErrorHandler(400,'Hotel Not Found'))
       }
-      const totalCost=hotel.pricePerNight*numberOfNights
-      const paymentIntent=await stripe.paymentIntents.create({
-        amount:totalCost,
-        currency:"gbp",
-        metadata:{
-          hotelId,userId:req.userId
+
+      const totalCost=hotel.pricePerNight*numberOfNights;
+      const customer=await stripe.customers.create({
+        name:user.firstName+' '+user.lastName,
+        address:{
+          line1:hotel.city,
+          line2:hotel.country,
+          postal_code:'89834',
+          city:hotel.city,
+          state:'Madhya Pradesh',
+          country:hotel.country
         }
       })
+      console.log(customer)
+      const paymentIntent=await stripe.paymentIntents.create({
+        description:'Hotel Booking with Stripe payment gateway',
+        amount:totalCost*100,
+        currency: 'inr',
+        payment_method_types:['card'],       
+        metadata:{
+          hotelId,userId:req.userId
+        },
+      })
+      
       if(!paymentIntent.client_secret){
         return next(ErrorHandler(500,'Error Creating Payment Intent'))
       }
+      console.log(paymentIntent)
       const response={
         paymentIntentId:paymentIntent.id,
-        clientSecret:paymentIntent.client_secret.toString(),
+        clientSecret:paymentIntent.client_secret,
         totalCost,
       }
       return res.status(200).send(response)
@@ -95,6 +114,7 @@ class HotelController {
   }
   async hotelBooking(req,res,next){
     try {
+      console.log(req.body)
       const paymentIntentId=req.body.paymentIntentId
       const paymentIntent=await stripe.paymentIntents.retrieve(paymentIntentId)
       if(!paymentIntent){

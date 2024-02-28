@@ -1,31 +1,78 @@
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import React from "react";
+import { CardElement} from "@stripe/react-stripe-js";
+import React, { useState } from "react";
+import {toast} from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import {useStripe,useElements} from "@stripe/react-stripe-js"
+import { useStripe, useElements } from "@stripe/react-stripe-js";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { hotelBookingRequest } from "../../http";
 const BookingForm = ({ currentUser, paymentIntent }) => {
   // console.log(currentUser)
+  const [loading,setLoading]=useState(false)
+  const navigate=useNavigate()
+  const { hotelId } = useParams();
+  const { adultCount, childCount, checkIn, checkOut } = useSelector(
+    (state) => state.search
+  );
+  console.log(hotelId)
   const { handleSubmit, register } = useForm();
-  const stripe=useStripe()
-  const elements=useElements()
-  const onSubmit=async(formData)=>{
+  const defaultValues={
+      firstName: currentUser?.firstName,
+      lastName: currentUser?.lastName,
+      name:currentUser.firstName+' '+currentUser.lastName,
+      address:'Bhopal',
+      email: currentUser?.email,
+      adultCount,
+      shippingAddress:'Kolkata, India',
+      billingAddress:'Chennai, India',
+      description:'As per Indian regulations, export transactions require a description. More info here: https://stripe.com/docs/india-exports',
+      childCount,
+      checkIn,
+      checkOut,
+      hotelId,
+      totalCost: paymentIntent.totalCost,
+      paymentIntentId: paymentIntent.paymentIntentId,
+  }
+  const stripe = useStripe();
+  const elements = useElements();
+  const onSubmit = async () => {
     try {
-      if(!stripe || !elements){
+      setLoading(true)
+      if (!stripe || !elements) {
         return;
       }
-      const result=await stripe.confirmCardPayment(paymentIntent.clientSecret,{
-        payment_method:{
-          card:elements.getElement(CardElement)
-        }
-      })
-      if(result.paymentIntent?.status==='succeeded'){
-        
+      console.log(paymentIntent.clientSecret)
+      const result = await stripe.confirmCardPayment(
+        paymentIntent.clientSecret,
+        {
+          payment_method: {
+            card: elements.getElement(CardElement),
+          }
+        },
+      );
+      console.log(result)
+      if(result.error){
+        setLoading(false)
+      }
+      if (result.paymentIntent?.status === "succeeded") {
+        console.log('request triggered')
+        const { data } = await hotelBookingRequest(hotelId,{
+          ...defaultValues,
+          paymentIntentId: result.paymentIntent.id,
+        });
+        console.log(data)
+        toast.success('Hotel Booking Successfully')
+        setLoading(false)
+        return navigate('/search')
       }
     } catch (error) {
-      console.log(error)
+      setLoading(false)
+      console.log(error);
     }
-  }
+  };
   return (
-    <form className="grid grid-cols-1 gap-5 rounded-lg border border-slate-500 p-3">
+    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-5 rounded-lg border border-slate-500 p-3">
       <span className="text-3xl font-bold">Confirm Your Details</span>
       <div className="grid grid-cols-2 gap-6">
         <label className="text-gray-700 text-sm font-bold flex-1">
@@ -83,6 +130,13 @@ const BookingForm = ({ currentUser, paymentIntent }) => {
           id="payment-element"
           className="border rounded-md p-2 text-sm"
         />
+      </div>
+      <div className="flex justify-end">
+        <button disabled={loading} type="submit" className="bg-blue-600 text-white font-bold p-2 rounded-md hover:bg-blue-500 disabled:bg-gray-500 text-md">
+          {
+            loading ? "Saving...":"Confirm Booking"
+          }
+        </button>
       </div>
     </form>
   );

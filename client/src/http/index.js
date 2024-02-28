@@ -10,7 +10,7 @@ export const searchHotels=(queryParams)=>axios.get(`/api/hotels/search?${queryPa
 export const findHotelById=(hotelId)=>axios.get(`/api/hotels/hotel/${hotelId}`)
 export const me=()=>axios.get('/api/users/me')
 export const createPaymentIntent=(hotelId,numberOfNights)=>axios.post(`/api/hotels/${hotelId}/bookings/create-payment-intent`,{numberOfNights:numberOfNights})
-
+export const hotelBookingRequest=(hotelId,formData)=>axios.post(`/api/hotels/${hotelId}/bookings`,formData)
 
 
 
