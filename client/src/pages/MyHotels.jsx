@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { fetchMyHotels } from "../http/index.js";
 import { BsBuilding, BsMap } from "react-icons/bs";
 import { BiHotel, BiMoney, BiStar } from "react-icons/bi";
+import { toast } from 'react-toastify';
 const MyHotels = () => {
   const [hotelData, setHotelData] = useState([]);
   useEffect(() => {
@@ -12,6 +13,7 @@ const MyHotels = () => {
         console.log(data);
         setHotelData(data);
       } catch (error) {
+        toast.error(error.response.data.message)
         console.log(error.response.data.message);
       }
     };

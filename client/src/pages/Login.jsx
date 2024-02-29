@@ -20,8 +20,7 @@ const Login = () => {
   const onSubmit = handleSubmit(async (payload) => {
     try {
       dispatch(StartSignIn())
-      const { data } = await loginUser(payload);
-      console.log(data);
+      const { data } = await loginUser(payload)
       toast.success("Login Successfully!")
       dispatch(SignInSuccess(data))
       navigate(location.state?.from?.pathname || '/');

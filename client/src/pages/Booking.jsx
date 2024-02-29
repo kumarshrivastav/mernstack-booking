@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createPaymentIntent, findHotelById, me } from "../http";
 import BookingForm from "../forms/BookingForm/BookingForm";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BookingDetailSummary from "../components/BookingDetailSummary";
 import { useSelector } from "react-redux";
 import { Elements } from "@stripe/react-stripe-js";
@@ -9,17 +8,13 @@ import { loadStripe } from "@stripe/stripe-js";
 const STRIPE_PUB_KEY=import.meta.env.VITE_STRIPE_PUB_KEY || ''
 const stripePromise=loadStripe(STRIPE_PUB_KEY)
 const Booking = () => {
-  // const { stripePromise } = useSelector((state) => state.user);
   const { destination,checkIn, checkOut, adultCount, childCount } = useSelector(
     (state) => state.search
   );
-  const navigate = useNavigate();
-  const location = useLocation();
   const [user, setUser] = useState({});
   const [hotel, setHotel] = useState({});
   const [paymentIntentData,setPaymentIntentData]=useState({})
   const { hotelId } = useParams();
-  console.log(paymentIntentData)
   const [numberOfNights, setNumberOfNights] = useState(0);
   useEffect(() => {
     if (checkIn && checkOut) {
@@ -61,15 +56,8 @@ const Booking = () => {
     }
   }
   useEffect(() => {
-    // findHotel()
-    // loggedInUser();
-    // createPaymentIntents();
     Promise.all([findHotel(),loggedInUser(),createPaymentIntents()])
-  }, [hotelId,numberOfNights,destination]);
-
-  // if(!user.email){
-  // return navigate('/login',{state:{from:location}})
-  // }
+  }, [hotelId,numberOfNights,destination])
 
   if (!hotel) {
     return <></>;

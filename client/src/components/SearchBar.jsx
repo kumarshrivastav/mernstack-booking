@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 const SearchBar = () => {
   const [userSearchContext, setUserSearchContext] = useState({
     destination: sessionStorage.getItem('destination') || '',
-    checkIn: new Date(sessionStorage.getItem('checkIn') || new Date()),
-    checkOut: new Date(sessionStorage.getItem('checkOut') || new Date()),
+    checkIn: (new Date(sessionStorage.getItem('checkIn') || new Date())).toISOString(),
+    checkOut: (new Date(sessionStorage.getItem('checkOut') || new Date())).toISOString(),
     adultCount: parseInt(sessionStorage.getItem('adultCount') || '1'),
     childCount: parseInt(sessionStorage.getItem('childCount') || '0'),
     hotelId: sessionStorage.getItem('hotelId') || '',
@@ -31,8 +31,8 @@ const SearchBar = () => {
   const clearUserContext=()=>{
     setUserSearchContext({
     destination: "",
-    checkIn: new Date(),
-    checkOut: new Date(),
+    checkIn: new Date().toISOString(),
+    checkOut: new Date().toISOString(),
     adultCount: 1,
     childCount: 0,
     hotelId: "",}
@@ -98,15 +98,15 @@ const SearchBar = () => {
       </div>
       <div>
         <DatePicker
-          selected={userSearchContext.checkIn}
+          selected={new Date(userSearchContext.checkIn).toISOString()}
           onChange={(date) =>
-            setUserSearchContext({ ...userSearchContext, checkIn: date.toLocaleDateString() })
+            setUserSearchContext({ ...userSearchContext, checkIn: date.toISOString() })
           }
           selectsStart
-          startDate={userSearchContext.checkIn}
-          endDate={userSearchContext.checkOut}
-          minDate={minDate}
-          maxDate={maxDate}
+          startDate={new Date(userSearchContext.checkIn).toISOString()}
+          endDate={new Date(userSearchContext.checkOut).toISOString()}
+          minDate={new Date(minDate).toISOString()}
+          maxDate={new Date(maxDate).toISOString()}
           placeholderText="Check-in Date"
           className="min-w-full bg-white p-2 focus:outline-none"
           wrapperClassName="min-w-full"
@@ -114,15 +114,15 @@ const SearchBar = () => {
       </div>
       <div>
         <DatePicker
-          selected={userSearchContext.checkOut}
+          selected={new Date(userSearchContext.checkOut).toISOString()}
           onChange={(date) =>
-            setUserSearchContext({ ...userSearchContext, checkOut: date.toLocaleDateString() })
+            setUserSearchContext({ ...userSearchContext, checkOut: date.toISOString() })
           }
           selectsStart
-          startDate={userSearchContext.checkIn}
-          endDate={userSearchContext.checkOut}
-          minDate={minDate}
-          maxDate={maxDate}
+          startDate={new Date(userSearchContext.checkIn).toISOString()}
+          endDate={new Date(userSearchContext.checkOut).toISOString()}
+          minDate={new Date(minDate).toISOString()}
+          maxDate={new Date(maxDate).toISOString()}
           placeholderText="Check-out Date"
           className="min-w-full bg-white p-2 focus:outline-none"
           wrapperClassName="min-w-full"

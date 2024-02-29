@@ -4,7 +4,7 @@ import constructSearchQuery from "../utils/constructedQuery.js";
 import userModel from "../models/user.js"
 import ErrorHandler from "../utils/error.handler.js";
 import Stripe from "stripe";
-const stripe=new Stripe(process.env.STRIPE_API_SECRET_KEY)
+
 class HotelController {
   async getHotelSearch(req, res, next) {
     try {
@@ -66,7 +66,8 @@ class HotelController {
     // 2.hotelId
     // 3.userId
     try {
-      // console.log(req.body)
+      const StripeApiKey=process.env.STRIPE_API_SECRET_KEY
+      const stripe=new Stripe(StripeApiKey)
       const {numberOfNights}=req.body
       const hotelId=req.params.hotelId
       const user=await userModel.findById(req.userId)
@@ -120,6 +121,8 @@ class HotelController {
   }
   async hotelBooking(req,res,next){
     try {
+      const StripeApiKey=process.env.STRIPE_API_SECRET_KEY
+      const stripe=new Stripe(StripeApiKey)
       const paymentIntentId=req.body.paymentIntentId
       const paymentIntent=await stripe.paymentIntents.retrieve(paymentIntentId)
       if(!paymentIntent){

@@ -13,7 +13,7 @@ class MyBookingController {
         }
         return hotelWithUserBookings;
     })
-      return res.status(200).send(results)
+      return res.status(200).send(hotels)
     } catch (error) {
       return next(error);
     }

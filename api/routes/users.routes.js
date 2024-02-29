@@ -24,7 +24,6 @@ const registerCredentials = [
 
 router.post("/register", registerCredentials, AuthController.register);
 router.post("/login", loginCredentials, AuthController.login);
-// router.get("/refresh", AuthController.refresh);
 router.get("/validate-token", verifyToken, AuthController.verifyToken);
 router.get("/logout",AuthController.logout)
 router.get('/me',verifyToken,AuthController.me)

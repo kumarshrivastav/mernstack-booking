@@ -3,7 +3,6 @@ import { myhotelbookings } from '../http'
 
 const MyBooking = () => {
     const [myBooking, setMyBooking] = useState([])
-    console.log(myBooking)
     useEffect(() => {
         const myHotelBooking = async () => {
             try {
@@ -14,7 +13,7 @@ const MyBooking = () => {
             }
         }
         myHotelBooking()
-    })
+    },[])
     if (!myBooking || myBooking.length === 0) {
         return <span>No Bookings Found</span>
     }

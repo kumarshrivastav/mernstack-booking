@@ -13,19 +13,3 @@ export const createPaymentIntent=(hotelId,numberOfNights)=>axios.post(`/api/hote
 export const hotelBookingRequest=(hotelId,formData)=>axios.post(`/api/hotels/${hotelId}/bookings`,formData)
 export const myhotelbookings=()=>axios.get('/api/mybooking/booking')
 export const getHotels=()=>axios.get("/api/hotels")
-
-
-
-axios.interceptors.response.use((config)=>config,async (error)=>{
-    const orignalRequest=error.config;
-    if(error?.response?.status===401 && orignalRequest && !orignalRequest.isRetry){
-        orignalRequest.isRetry=true;
-        try {
-            await axios.get("http://localhost:8000/api/users/refresh",{withCredentials:true});
-            return axios.request(orignalRequest);
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
-    throw error;
-})
