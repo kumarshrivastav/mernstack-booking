@@ -1,12 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit"
 const initialState={
-    destination:sessionStorage.getItem('destination') || '',
-    checkIn:new Date(sessionStorage.getItem('checkIn') || new Date()).toISOString(),
-    checkOut:new Date(sessionStorage.getItem('checkOut') || new Date()).toISOString(),
-    adultCount:parseInt(sessionStorage.getItem('adultCount') || '1'),
-    childCount:parseInt(sessionStorage.getItem('adultCount') || '0'),
-    hotelId:sessionStorage.getItem('hotelId') || '',
-
+    destination:'',
+    checkIn:new Date().toISOString(),
+    checkOut:new Date().toISOString(),
+    adultCount:'1',
+    childCount:'0',
+    hotelId:''
 }
 
 export const searchSlice=createSlice({
@@ -15,7 +14,7 @@ export const searchSlice=createSlice({
     reducers:{
         setSearchContext:(state,action)=>{
             const searchObject=action.payload
-            // console.log(searchObject)
+
             state.destination=searchObject.destination
             sessionStorage.setItem('destination',searchObject.destination)
 
@@ -30,26 +29,17 @@ export const searchSlice=createSlice({
 
             state.childCount=searchObject.childCount
             sessionStorage.setItem('childCount',searchObject.childCount.toString())
-
-            if(searchObject.hotelId){
-                state.hotelId=searchObject.hotelId
-                sessionStorage.setItem('hotelId',searchObject.hotelId.toString())
-            }
             
         },
         resetSearchContext:(state)=>{
             state.destination=''
-            sessionStorage.removeItem('destination')
             state.checkIn=new Date().toISOString(),
-            sessionStorage.removeItem('checkIn')
             state.checkOut=new Date().toISOString(),
-            sessionStorage.removeItem('checkOut')
-            state.adultCount=null,
-            sessionStorage.removeItem('adultCount')
-            state.childCount=null,
-            sessionStorage.removeItem('childCount')
+            state.adultCount='1'
+            state.childCount='0'
             state.hotelId=''
-            sessionStorage.removeItem('hotelId')
+            sessionStorage.clear()
+
         }
     }
 })
