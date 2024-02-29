@@ -4,12 +4,14 @@ import {toast} from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { hotelBookingRequest } from "../../http";
+import { resetSearchContext } from "../../state/searchSlice";
 const BookingForm = ({ currentUser, paymentIntent }) => {
   // console.log(currentUser)
   const [loading,setLoading]=useState(false)
+  const dispatch=useDispatch()
   const navigate=useNavigate()
   const { hotelId } = useParams();
   const { adultCount, childCount, checkIn, checkOut } = useSelector(
@@ -59,6 +61,7 @@ const BookingForm = ({ currentUser, paymentIntent }) => {
         });
         toast.success('Hotel Booking Successfully')
         setLoading(false)
+        dispatch(resetSearchContext())
         return navigate('/search')
       }
     } catch (error) {
