@@ -87,14 +87,14 @@ const Search = () => {
                         <option value="pricePerNightDesc">Price Per Night (high to low)</option>
                     </select>
                 </div>
-                {
+                {/* {
                     hotelInfo?.data?.map((hotel: any) => (
                         <SearchResultCard hotel={hotel} key={hotel._id} />
                     ))
                 }
                 <div>
                     <Pagination />
-                </div>
+                </div> */}
             </div>
         </div>
     )
