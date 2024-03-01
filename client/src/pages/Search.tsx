@@ -77,9 +77,8 @@ const Search = () => {
             <div className='flex flex-col gap-5 '>
                 <div className='flex justify-between items-center'>
                     <span className='text-xl font-bold'>
-                        {/* {hotelInfo?.pagination.total} Hotels found
-                        {destination ? ` in ${destination}` : ""} */}
-                        Page Testing
+                        {hotelInfo?.pagination.total} Hotels found
+                        {destination ? ` in ${destination}` : ""}
                     </span>
                     {/* sort options */}
                     <select value={sortOption} onChange={(e)=>setSortOpton(e.target.value)} className='p-2 border rounded-md'>
@@ -89,14 +88,14 @@ const Search = () => {
                         <option value="pricePerNightDesc">Price Per Night (high to low)</option>
                     </select>
                 </div>
-                {/* {
+                {
                     hotelInfo?.data?.map((hotel: any) => (
                         <SearchResultCard hotel={hotel} key={hotel._id} />
                     ))
                 }
                 <div>
                     <Pagination />
-                </div> */}
+                </div>
             </div>
         </div>
     )
