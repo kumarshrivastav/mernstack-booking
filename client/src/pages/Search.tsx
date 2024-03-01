@@ -10,8 +10,9 @@ import FacilitiesFilter from '../components/FacilitiesFilter'
 import PriceFilter from '../components/PriceFilter'
 const Search = () => {
     const dispatch = useDispatch()
-    // const { hotelInfo, page } = useSelector((state: any) => state.hotelInfo)
-    // const { destination, checkIn, checkOut, adultCount, childCount } = useSelector((state: any) => state.search)
+    // eslint-disable-next-line
+    const { hotelInfo, page } = useSelector((state:any) => state.hotelInfo)
+    const { destination, checkIn, checkOut, adultCount, childCount } = useSelector((state: any) => state.search)
     const [facilities, setFacilities] = useState([])
     const [types, setTypes] = useState([])
     const [stars, setStars] = useState([])
