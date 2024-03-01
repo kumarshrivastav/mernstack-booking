@@ -77,7 +77,7 @@ const Search = () => {
             <div className='flex flex-col gap-5 '>
                 <div className='flex justify-between items-center'>
                     <span className='text-xl font-bold'>
-                        {hotelInfo?.pagination.total} Hotels found
+                        {hotelInfo?.pagination?.total} Hotels found
                         {destination ? ` in ${destination}` : ""}
                     </span>
                     {/* sort options */}
