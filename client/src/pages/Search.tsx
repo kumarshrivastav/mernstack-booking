@@ -10,8 +10,8 @@ import FacilitiesFilter from '../components/FacilitiesFilter'
 import PriceFilter from '../components/PriceFilter'
 const Search = () => {
     const dispatch = useDispatch()
-    const { hotelInfo, page } = useSelector((state: any) => state.hotelInfo)
-    const { destination, checkIn, checkOut, adultCount, childCount } = useSelector((state: any) => state.search)
+    // const { hotelInfo, page } = useSelector((state: any) => state.hotelInfo)
+    // const { destination, checkIn, checkOut, adultCount, childCount } = useSelector((state: any) => state.search)
     const [facilities, setFacilities] = useState([])
     const [types, setTypes] = useState([])
     const [stars, setStars] = useState([])
@@ -76,8 +76,9 @@ const Search = () => {
             <div className='flex flex-col gap-5 '>
                 <div className='flex justify-between items-center'>
                     <span className='text-xl font-bold'>
-                        {hotelInfo?.pagination.total} Hotels found
-                        {destination ? ` in ${destination}` : ""}
+                        {/* {hotelInfo?.pagination.total} Hotels found
+                        {destination ? ` in ${destination}` : ""} */}
+                        Page Testing
                     </span>
                     {/* sort options */}
                     <select value={sortOption} onChange={(e)=>setSortOpton(e.target.value)} className='p-2 border rounded-md'>
