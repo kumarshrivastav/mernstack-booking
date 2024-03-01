@@ -30,21 +30,24 @@ const Search = () => {
     types?.forEach((type) => queryParams.append('types', type))
     stars?.forEach((star) => queryParams.append('stars', star))
 
-    const handleStarsChange = (e:any) => {
-        e.preventDefault()
-        const starRating = e.target.value;
-        setStars((prevStars:any) => e.target.checked ? [...prevStars, starRating] : prevStars.filter((star:any) => star !== starRating))
-    }
-    const handleHotelTypeChange = (e:any) => {
-        e.preventDefault()
-        const hotelType = e.target.value
-        setTypes((prevHotelType:any) => e.target.checked ? [...prevHotelType, hotelType] : prevHotelType.filter((Type:any) => Type !== hotelType))
-    }
-    const handleFacilityChange = (e:any) => {
-        e.preventDefault()
-        const hotelFacility = e.target.value
-        setFacilities((prevFacility:any) => e.target.checked ? [...prevFacility, hotelFacility] : prevFacility.filter((hotelFac:any) => hotelFac !== hotelFacility))
-    }
+    // const handleStarsChange = (e:any) => {
+    //     e.preventDefault()
+    //     const starRating = e.target.value;
+    //     setStars((prevStars:any) => e.target.checked ? [...prevStars, starRating] : prevStars.filter((star:any) => star !== starRating))
+    // }
+    // const handleHotelTypeChange = (e:any) => {
+    //     e.preventDefault()
+    //     const hotelType = e.target.value
+    //     setTypes((prevHotelType:any) => e.target.checked ? [...prevHotelType, hotelType] : prevHotelType.filter((Type:any) => Type !== hotelType))
+    // }
+    // const handleFacilityChange = (e:any) => {
+    //     e.preventDefault()
+    //     const hotelFacility = e.target.value
+    //     setFacilities((prevFacility:any) => e.target.checked ? [...prevFacility, hotelFacility] : prevFacility.filter((hotelFac:any) => hotelFac !== hotelFacility))
+    // }
+    const handleFacilityChange=()=>{}
+    const handleStarsChange=()=>{}
+    const handleHotelTypeChange=()=>{}
     const handleSearch = async () => {
         try {
             const { data } = await searchHotels(queryParams)
