@@ -12,11 +12,11 @@ const Search = () => {
     const dispatch = useDispatch()
     const { hotelInfo, page } = useSelector((state: any) => state.hotelInfo)
     const { destination, checkIn, checkOut, adultCount, childCount } = useSelector((state: any) => state.search)
-    const [facilities, setFacilities] = useState<string[]>([])
-    const [types, setTypes] = useState<string[]>([])
-    const [stars, setStars] = useState<string[]>([])
-    const [maxPrice, setMaxPrice] = useState<number | undefined>()
-    const [sortOption, setSortOpton] = useState<string>("")
+    const [facilities, setFacilities] = useState([])
+    const [types, setTypes] = useState([])
+    const [stars, setStars] = useState([])
+    const [maxPrice, setMaxPrice] = useState()
+    const [sortOption, setSortOpton] = useState("")
     const queryParams = new URLSearchParams()
     queryParams.append('destination', destination || "")
     queryParams.append('checkIn', checkIn || "")
@@ -24,26 +24,26 @@ const Search = () => {
     queryParams.append('adultCount', adultCount || "")
     queryParams.append('childCount', childCount || "")
     queryParams.append('page', page.toString() || "")
-    queryParams.append('maxPrice', maxPrice?.toString() || "")
+    queryParams.append('maxPrice', maxPrice|| "")
     queryParams.append('sortOption', sortOption || '')
     facilities?.forEach((facility) => queryParams.append('facilities', facility))
     types?.forEach((type) => queryParams.append('types', type))
     stars?.forEach((star) => queryParams.append('stars', star))
 
-    const handleStarsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleStarsChange = (e:any) => {
         e.preventDefault()
         const starRating = e.target.value;
-        setStars((prevStars) => e.target.checked ? [...prevStars, starRating] : prevStars.filter((star) => star !== starRating))
+        setStars((prevStars:any) => e.target.checked ? [...prevStars, starRating] : prevStars.filter((star:any) => star !== starRating))
     }
-    const handleHotelTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleHotelTypeChange = (e:any) => {
         e.preventDefault()
         const hotelType = e.target.value
-        setTypes((prevHotelType) => e.target.checked ? [...prevHotelType, hotelType] : prevHotelType.filter((Type) => Type !== hotelType))
+        setTypes((prevHotelType:any) => e.target.checked ? [...prevHotelType, hotelType] : prevHotelType.filter((Type:any) => Type !== hotelType))
     }
-    const handleFacilityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFacilityChange = (e:any) => {
         e.preventDefault()
         const hotelFacility = e.target.value
-        setFacilities((prevFacility) => e.target.checked ? [...prevFacility, hotelFacility] : prevFacility.filter((hotelFac) => hotelFac !== hotelFacility))
+        setFacilities((prevFacility:any) => e.target.checked ? [...prevFacility, hotelFacility] : prevFacility.filter((hotelFac:any) => hotelFac !== hotelFacility))
     }
     const handleSearch = async () => {
         try {
@@ -67,7 +67,7 @@ const Search = () => {
                     <StarRatingFilter selectedStars={stars} onChange={handleStarsChange} />
                     <HotelTypeFilter selectedHotelTypes={types} onChange={handleHotelTypeChange} />
                     <FacilitiesFilter selectedFacilities={facilities} onChange={handleFacilityChange}/>
-                    <PriceFilter selectedPrice={maxPrice} onChange={(value?:number)=>setMaxPrice(value)}/>
+                    <PriceFilter selectedPrice={maxPrice} onChange={(value?:any)=>setMaxPrice(value)}/>
                 </div>
             </div>
             <div className='flex flex-col gap-5 '>
