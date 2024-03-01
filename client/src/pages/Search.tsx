@@ -31,37 +31,37 @@ const Search = () => {
     types?.forEach((type) => queryParams.append('types', type))
     stars?.forEach((star) => queryParams.append('stars', star))
 
-    // const handleStarsChange = (e:any) => {
-    //     e.preventDefault()
-    //     const starRating = e.target.value;
-    //     setStars((prevStars:any) => e.target.checked ? [...prevStars, starRating] : prevStars.filter((star:any) => star !== starRating))
-    // }
-    // const handleHotelTypeChange = (e:any) => {
-    //     e.preventDefault()
-    //     const hotelType = e.target.value
-    //     setTypes((prevHotelType:any) => e.target.checked ? [...prevHotelType, hotelType] : prevHotelType.filter((Type:any) => Type !== hotelType))
-    // }
-    // const handleFacilityChange = (e:any) => {
-    //     e.preventDefault()
-    //     const hotelFacility = e.target.value
-    //     setFacilities((prevFacility:any) => e.target.checked ? [...prevFacility, hotelFacility] : prevFacility.filter((hotelFac:any) => hotelFac !== hotelFacility))
-    // }
-    const handleFacilityChange=()=>{}
-    const handleStarsChange=()=>{}
-    const handleHotelTypeChange=()=>{}
-    // const handleSearch = async () => {
-    //     try {
-    //         const { data } = await searchHotels(queryParams)
-    //         dispatch(setHotels(data))
-    //         dispatch(setPage(data?.pagination?.page))
-    //         dispatch(setPages(data?.pagination?.pages))
-    //     } catch (error) {
-    //         console.log(error?.response?.data?.message)
-    //     }
-    // }
-    // useEffect(() => {
-    //     handleSearch()
-    // }, [page, destination, stars, types,facilities,maxPrice,sortOption])
+    const handleStarsChange = (e:any) => {
+        e.preventDefault()
+        const starRating = e.target.value;
+        setStars((prevStars:any) => e.target.checked ? [...prevStars, starRating] : prevStars.filter((star:any) => star !== starRating))
+    }
+    const handleHotelTypeChange = (e:any) => {
+        e.preventDefault()
+        const hotelType = e.target.value
+        setTypes((prevHotelType:any) => e.target.checked ? [...prevHotelType, hotelType] : prevHotelType.filter((Type:any) => Type !== hotelType))
+    }
+    const handleFacilityChange = (e:any) => {
+        e.preventDefault()
+        const hotelFacility = e.target.value
+        setFacilities((prevFacility:any) => e.target.checked ? [...prevFacility, hotelFacility] : prevFacility.filter((hotelFac:any) => hotelFac !== hotelFacility))
+    }
+    // const handleFacilityChange=()=>{}
+    // const handleStarsChange=()=>{}
+    // const handleHotelTypeChange=()=>{}
+    const handleSearch = async () => {
+        try {
+            const { data } = await searchHotels(queryParams)
+            dispatch(setHotels(data))
+            dispatch(setPage(data?.pagination?.page))
+            dispatch(setPages(data?.pagination?.pages))
+        } catch (error) {
+            console.log(error?.response?.data?.message)
+        }
+    }
+    useEffect(() => {
+        handleSearch()
+    }, [page, destination, stars, types,facilities,maxPrice,sortOption])
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5'>
