@@ -17,7 +17,7 @@ const Search = () => {
     const [stars, setStars] = useState([])
     const [maxPrice, setMaxPrice] = useState()
     const [sortOption, setSortOpton] = useState("")
-    const queryParams = new URLSearchParams()
+    const queryParams = new URLSearchParams()                  
     queryParams.append('destination', destination || "")
     queryParams.append('checkIn', checkIn || "")
     queryParams.append('checkOut', checkOut || "")
@@ -48,19 +48,19 @@ const Search = () => {
     const handleFacilityChange=()=>{}
     const handleStarsChange=()=>{}
     const handleHotelTypeChange=()=>{}
-    const handleSearch = async () => {
-        try {
-            const { data } = await searchHotels(queryParams)
-            dispatch(setHotels(data))
-            dispatch(setPage(data?.pagination?.page))
-            dispatch(setPages(data?.pagination?.pages))
-        } catch (error) {
-            console.log(error?.response?.data?.message)
-        }
-    }
-    useEffect(() => {
-        handleSearch()
-    }, [page, destination, stars, types,facilities,maxPrice,sortOption])
+    // const handleSearch = async () => {
+    //     try {
+    //         const { data } = await searchHotels(queryParams)
+    //         dispatch(setHotels(data))
+    //         dispatch(setPage(data?.pagination?.page))
+    //         dispatch(setPages(data?.pagination?.pages))
+    //     } catch (error) {
+    //         console.log(error?.response?.data?.message)
+    //     }
+    // }
+    // useEffect(() => {
+    //     handleSearch()
+    // }, [page, destination, stars, types,facilities,maxPrice,sortOption])
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5'>
